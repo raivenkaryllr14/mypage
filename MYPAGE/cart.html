@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Donuts</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f2f2f2;
+    }
+
+    .cart-container {
+        text-align: center;
+        padding: 20px;
+    }
+
+    .cart-items {
+        list-style: none;
+        padding: 0;
+    }
+
+    .cart-items li {
+        display: flex;
+        align-items: center;
+        margin: 10px 0;
+    }
+
+    .cart-items img {
+        width: 100px;
+        height: 100px;
+        margin-right: 20px;
+    }
+
+    .item-details {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .item-details span {
+        font-size: 18px;
+        margin: 5px 0;
+    }
+
+    #cart-total {
+        font-size: 24px;
+        font-weight: bold;
+    }
+    
+</style>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <h4 class="logo">Mini Donuts✧</h4>
+        <ul class="menu-items">
+            <li><a href="Mini Donut Website.html">Home</a></li>
+            <li><a href="Mini Donut About.html">About</a></li>
+            <li><a href="Mini Donut Menu.html">Menu</a></li>
+            <li><a href="Contact.html">Contact</a></li>
+            <li><a href="cart.html" class="cart-link"><i class="fas fa-shopping-cart"></i></a></li>
+        </ul>
+    </nav>
+<body>
+    <!-- Your navigation bar and other HTML content -->
+
+    <section class="cart-container">
+        <h2>Your Cart</h2>
+        <div id="cart-items">
+            <!-- Cart items will be displayed here -->
+        </div>
+        <p>Total: <span id="total-price">₱0</span></p>
+        <button id="checkout-button">Checkout</button>
+    </section>
+
+    <script>
+        const cartItems = document.getElementById('cart-items');
+        const totalPrice = document.getElementById('total-price');
+
+        // Retrieve cart data from local storage
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        // Function to calculate and update the total price
+        function updateTotal() {
+            const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+            totalPrice.textContent = `₱${total}`;
+        }
+
+        // Loop through cart items and display them
+        cart.forEach(item => {
+            const itemDiv = document.createElement('div');
+            itemDiv.innerHTML = `
+                <p>${item.name}</p>
+                <p>Price: ₱${item.price}</p>
+                <p>Quantity: ${item.quantity}</p>
+                <button class="remove-item">Remove</button>
+            `;
+            cartItems.appendChild(itemDiv);
+
+            // Add event listener to remove items from the cart
+            const removeButton = itemDiv.querySelector('.remove-item');
+            removeButton.addEventListener('click', () => {
+                const itemIndex = cart.indexOf(item);
+                cart.splice(itemIndex, 1);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                itemDiv.remove();
+                updateTotal();
+            });
+        });
+
+        // Display the total price
+        updateTotal();
+
+        // Implement checkout functionality (you can link this to your actual checkout page)
+        const checkoutButton = document.getElementById('checkout-button');
+        checkoutButton.addEventListener('click', () => {
+            // Redirect to the checkout page or implement your checkout logic
+            window.location.href = 'checkout.html'; // Change the URL as needed
+        });
+    </script>
+</body>
+</html>
